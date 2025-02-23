@@ -26,8 +26,7 @@ export const persons: Person[] = [
 // Define the function with the proper generics
 export function filterPersons<
   T extends 'user' | 'admin',  // personType argument is either 'user' or 'admin'
-  P extends T extends 'user' ? Partial<User> : Partial<Admin>  // criteria object is a partial User or Admin
->(persons: Person[], personType: T, criteria: P): T extends 'user' ? User[] : Admin[] {
+>(persons: Person[], personType: T, criteria: Partial<T extends 'user' ? User : Admin>): T extends 'user' ? User[] : Admin[] {
     // Filter persons based on the personType
     const filteredPersons = persons.filter((person) => person.type === personType);
     
@@ -49,11 +48,11 @@ export const adminsOfAge23 = filterPersons(persons, 'admin', { age: 23 });
 console.log('Users of age 23:');
 usersOfAge23.forEach(logPerson);
 
-console.log();
 
 console.log('Admins of age 23:');
 adminsOfAge23.forEach(logPerson);
 
+// function for proper formatting
 function logPerson(person: Person) {
     console.log(
         ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`

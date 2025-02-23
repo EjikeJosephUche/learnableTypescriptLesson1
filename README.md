@@ -1,6 +1,6 @@
 # learnableTypescriptLesson1
 
-here is a link to the code sample: https://docs.google.com/document/d/1wI-IJcXLkwh6IL6zpLGk9OvQR2ueqapGasyv5jVaTJE/edit?tab=t.0
+here is a link to the code sample: [SAMPLE CODE](https://docs.google.com/document/d/1wI-IJcXLkwh6IL6zpLGk9OvQR2ueqapGasyv5jVaTJE/edit?tab=t.0)
 
 ## Task Overview
 The TypeScript code defines a system where we can filter a list of Person objects (which can be either a User or an Admin) based on specific criteria like type: 'user' or 'admin'. The filtering functionality is achieved through the filterPersons function, which accepts a list of persons, a type ('user' or 'admin'), and filtering criteria. The task was to fix and improve the typings for this function.
@@ -26,11 +26,12 @@ The filterPersons function was refactored to use TypeScript generics and conditi
 
 ```
 export function filterPersons<
-  T extends 'user' | 'admin',  
-  P extends T extends 'user' ? Partial<User> : Partial<Admin>  
->(persons: Person[], personType: T, criteria: P): T extends 'user' ? User[] : Admin[] {
+  T extends 'user' | 'admin',  // personType argument is either 'user' or 'admin'
+>(persons: Person[], personType: T, criteria: Partial<T extends 'user' ? User : Admin>): T extends 'user' ? User[] : Admin[] {
+    // Filter persons based on the personType
     const filteredPersons = persons.filter((person) => person.type === personType);
     
+    // Further filter based on the criteria
     const result = filteredPersons.filter((person) => {
         let criteriaKeys = Object.keys(criteria) as (keyof (User | Admin))[];
         return criteriaKeys.every((fieldName) => {
@@ -43,7 +44,7 @@ export function filterPersons<
 
 ```
 ## Key Improvements:
-- *Generic Function:* The function is now generic, accepting T for the personType and P for the filtering criteria. This ensures that the correct type is returned.
+- *Generic Function:* The function is now generic, accepting T for the personType and ```Partial<T extends 'user' ? User : Admin>``` for the filtering criteria. This ensures that the correct type is returned.
 - *Partial Types:* The criteria can now be a partial User or Admin object, depending on the personType.
 - *Type Exclusion:* The type field is excluded from the criteria, ensuring that it cannot be used for filtering.
 

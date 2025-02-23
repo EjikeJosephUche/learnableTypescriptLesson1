@@ -28,9 +28,9 @@ exports.usersOfAge23 = filterPersons(exports.persons, 'user', { age: 23 });
 exports.adminsOfAge23 = filterPersons(exports.persons, 'admin', { age: 23 });
 console.log('Users of age 23:');
 exports.usersOfAge23.forEach(logPerson);
-console.log();
 console.log('Admins of age 23:');
 exports.adminsOfAge23.forEach(logPerson);
+// function for proper formatting
 function logPerson(person) {
     console.log(" - ".concat(person.name, ", ").concat(person.age, ", ").concat(person.type === 'admin' ? person.role : person.occupation));
 }
